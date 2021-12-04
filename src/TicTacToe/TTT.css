@@ -1,0 +1,39 @@
+.TicTacToe{
+    width:200px;
+    height:250px;
+    border:2px solid;
+    text-align:center;
+}
+.TicTacToe h1{
+    margin:0;
+    text-align: center;
+    border-bottom: 1px solid;
+}
+.TicTacToe p{
+    margin: 3px 0;
+    text-align: center;
+}
+
+.board{
+    margin: 15px 47px;
+}
+.board-row:after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.square {
+    background: #fff;
+    border: 1px solid #999;
+    float: left;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 34px;
+    height: 34px;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    width: 34px;
+  }
