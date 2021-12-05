@@ -48,11 +48,14 @@ export default function Maze() {
   const dispatch = useDispatch();
   const [StartGameState, setStartGameState] = useState(false);
   const [ArrayInit, Array] = useSelector(selectMaze);
+  const [peopleX, setPeopleX] = useState(null);
+  const [peopleY, setPeopleY] = useState(null);
   const [dw] = [80];
 
 
-
-  const ClearAndDrawByMouseCaseB = (context, X, Y, diffX, diffY,moveX,moveY,moveNX,moveNY,img1,img2,img3,img4)=>{
+  //CaseBlank: move to an empty place  
+  const ClearAndDrawInCaseB = (context, X, Y, EndX,EndY,diffX, diffY,
+    moveX,moveY,moveNX,moveNY,img1,img2,img3,img4)=>{
     setStartGameState(false)
     dispatch(handleMove({ px: moveX, py: moveY, nx: moveNX, ny: moveNY }));
     let imgs = [img1, img2, img3, img4];
@@ -66,10 +69,12 @@ export default function Maze() {
    
     setTimeout(() => {
       setStartGameState(true)
+      setPeopleX(EndX)
+      setPeopleY(EndY)
      }, 400); 
   }
-
-  const ClearAndDrawByMouseCaseE = (context, X, Y, EndX,EndY, diffX, diffY,
+   //CaseEnd: move to end place 
+  const ClearAndDrawInCaseE = (context, X, Y, EndX,EndY, diffX, diffY,
     moveX,moveY,moveNX,moveNY,img1,img2,img3,img4,canvasW,canvasH)=>{
     setStartGameState(false)
     dispatch(handleMove({ px: moveX, py: moveY, nx: moveNX, ny: moveNY }));
@@ -96,38 +101,38 @@ export default function Maze() {
       let canvas = document.getElementById("MazeCanvas");
       let context = canvas.getContext("2d");
       const canvasInfo = canvas.getBoundingClientRect();
-      let x = Math.floor((e.clientX - canvasInfo.left) / dw);
-      let y = Math.floor((e.clientY - canvasInfo.top) / dw);
+      let x = Math.floor((e.clientX - canvasInfo.left) / dw); //column
+      let y = Math.floor((e.clientY - canvasInfo.top) / dw); //row
       
       if (Array[y][x] === "b") {
         if (x - 1 >= 0 ? Array[y][x - 1] === "p" : false) {
           //moveRight
-          ClearAndDrawByMouseCaseB(context, x - 1, y , dw/4, 0, y,x - 1,y,x,Right001,Right002,Right003,Right004)
+          ClearAndDrawInCaseB(context, x - 1, y ,x,y,dw/4, 0, y,x - 1,y,x,Right001,Right002,Right003,Right004)
         } else if (x + 1 < Array[0].length ? Array[y][x + 1] === "p" : false) {
           //moveLeft
-          ClearAndDrawByMouseCaseB(context, x + 1, y , -dw/4, 0, y,x + 1,y,x,Left001,Left002,Left003,Left004)
+          ClearAndDrawInCaseB(context, x + 1, y ,x,y, -dw/4, 0, y,x + 1,y,x,Left001,Left002,Left003,Left004)
         } else if (y - 1 >= 0 ? Array[y - 1][x] === "p" : false) {
           //moveDown
-          ClearAndDrawByMouseCaseB(context, x, y-1, 0, dw/4, y-1,x,y,x,Right001,Right002,Right003,Right004)
+          ClearAndDrawInCaseB(context, x, y-1, x,y, 0,dw/4, y-1,x,y,x,Right001,Right002,Right003,Right004)
         } else if (y + 1 < Array.length ? Array[y + 1][x] === "p" : false) {
           //moveUp
-          ClearAndDrawByMouseCaseB(context, x, y+1, 0, -dw/4, y+1,x,y,x,Left001,Left002,Left003,Left004)
+          ClearAndDrawInCaseB(context, x, y+1, x,y, 0,-dw/4, y+1,x,y,x,Left001,Left002,Left003,Left004)
         }
       } else if (Array[y][x] === "e") {
         if (x - 1 >= 0 ? Array[y][x - 1] === "p" : false) {
-          ClearAndDrawByMouseCaseE(context, x - 1, y ,x,y,dw/4, 0, y,x - 1,y,x,
+          ClearAndDrawInCaseE(context, x - 1, y ,x,y,dw/4, 0, y,x - 1,y,x,
             Right001,Right002,Right003,Right004,canvas.width,canvas.height)
 
         } else if (x + 1 < Array[0].length ? Array[y][x + 1] === "p" : false) {
-          ClearAndDrawByMouseCaseE(context, x + 1, y ,x,y, -dw/4, 0, y,x + 1,y,x,
+          ClearAndDrawInCaseE(context, x + 1, y ,x,y, -dw/4, 0, y,x + 1,y,x,
             Right001,Right002,Right003,Right004,canvas.width,canvas.height)
   
         } else if (y - 1 >= 0 ? Array[y - 1][x] === "p" : false) {
-          ClearAndDrawByMouseCaseE(context, x, y-1, x,y, 0,dw/4, y-1,x,y,x,
+          ClearAndDrawInCaseE(context, x, y-1, x,y, 0,dw/4, y-1,x,y,x,
             Right001,Right002,Right003,Right004,canvas.width,canvas.height)
 
         } else if (y + 1 < Array.length ? Array[y + 1][x] === "p" : false) {
-          ClearAndDrawByMouseCaseE(context, x, y+1, x,y, 0,-dw/4, y+1,x,y,x,
+          ClearAndDrawInCaseE(context, x, y+1, x,y, 0,-dw/4, y+1,x,y,x,
             Right001,Right002,Right003,Right004,canvas.width,canvas.height)
         }
       }
@@ -153,6 +158,8 @@ export default function Maze() {
         if (ArrayInit[difficulty][index][i][j] === "w") {
           context.drawImage(imgWall, j * dw, i * dw, dw, dw);
         } else if (ArrayInit[difficulty][index][i][j] === "p") {
+          setPeopleX(j);
+          setPeopleY(i);
           context.drawImage(imgPeople, j * dw, i * dw, dw, dw);
         } else if (ArrayInit[difficulty][index][i][j] === "e") {
           context.drawImage(imgEnd, j * dw, i * dw, dw, dw);
@@ -167,6 +174,7 @@ export default function Maze() {
   return (
     <div>
       <h1> Maze </h1>
+      <p>X:{peopleX} <br/> Y:{peopleY}</p>
       <select id="Select">
         <option value="Easy"> Easy </option>
         <option value="Normal"> Normal </option>
