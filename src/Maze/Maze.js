@@ -13,6 +13,9 @@ export default function Maze() {
 
 
   //CaseBlank: move to an empty place  
+  //Update store data
+  //X:currentX, Y:currentY, EndX:NextX, EndY:NextY, diffX && diffY:change distance
+  //moveX,moveY,moveNX,moveNY: 
   const ClearAndDrawInCaseB = (context, X, Y, EndX,EndY,diffX, diffY,
     moveX,moveY,moveNX,moveNY,img1,img2,img3,img4)=>{
     setStartGameState(false)
@@ -23,7 +26,7 @@ export default function Maze() {
       setTimeout(() => {
         context.clearRect(X * dw + diffX*i, Y * dw + diffY*i, dw, dw);
         context.drawImage(imgs[i], X * dw + diffX*(i+1), Y * dw + diffY*(i+1), dw, dw);
-      }, 100*i);
+      }, 50*i);
     }
    
     //display X Y location
@@ -31,9 +34,10 @@ export default function Maze() {
       setStartGameState(true)
       setPeopleX(EndX)
       setPeopleY(EndY)
-     }, 400); 
+     }, 170); 
   }
    //CaseEnd: move to end place 
+   //Update store data
   const ClearAndDrawInCaseE = (context, X, Y, EndX,EndY, diffX, diffY,
     moveX,moveY,moveNX,moveNY,img1,img2,img3,img4,canvasW,canvasH)=>{
     setStartGameState(false)
@@ -45,7 +49,7 @@ export default function Maze() {
         context.clearRect(X * dw + diffX*i, Y * dw + diffY*i, dw, dw);
         context.drawImage(imgs[i], X * dw + diffX*(i+1), Y * dw + diffY*(i+1), dw, dw);
         context.drawImage(images.imgEnd, EndX* dw, EndY* dw, dw, dw);
-      }, 100*i);
+      }, 50*i);
     }
 
     setTimeout(() => {
@@ -53,10 +57,10 @@ export default function Maze() {
       context.drawImage(images.imgEnd, EndX* dw, EndY* dw, dw, dw);
       context.drawImage(imgs[3], EndX * dw , EndY * dw, dw, dw);
       context.drawImage(images.imgWin,canvasW / 2 - 150,canvasH / 2 - 100,300,200);
-    }, 400);
+    }, 170);
   }
 
-  const RunGame = (e) => {
+  const RunGamebyMouse = (e) => {
     if (StartGameState === true) {
       let canvas = document.getElementById("MazeCanvas");
       let context = canvas.getContext("2d");
@@ -99,6 +103,54 @@ export default function Maze() {
     }
   };
 
+  const RunGamebyKeyboard = (e) =>{
+    //console.log(e.key)
+
+    if (StartGameState === true) {
+      let canvas = document.getElementById("MazeCanvas");
+      let context = canvas.getContext("2d");
+      const canvasInfo = canvas.getBoundingClientRect();
+
+      if (peopleX+1 < Array[0].length && e.key === "d" && Array[peopleY][peopleX+1] === "b"){
+        //moveRight to Empty
+        ClearAndDrawInCaseB(context, peopleX, peopleY ,peopleX+1,peopleY,dw/4, 0, 
+          peopleY,peopleX,peopleY,peopleX+1,images.Right001,images.Right002,images.Right003,images.Right004)
+      }else if (peopleX-1 >= 0 && e.key === "a" && Array[peopleY][peopleX-1] === "b"){
+        //moveLeft to Empty
+        ClearAndDrawInCaseB(context, peopleX, peopleY ,peopleX-1,peopleY,-dw/4, 0, 
+          peopleY,peopleX,peopleY,peopleX-1,images.Left001,images.Left002,images.Left003,images.Left004)
+      }else if (peopleY+1 < Array.length && e.key === "s" && Array[peopleY+1][peopleX] === "b"){
+        //moveDown to Empty
+        ClearAndDrawInCaseB(context, peopleX, peopleY ,peopleX,peopleY+1,0,dw/4,
+          peopleY,peopleX,peopleY+1,peopleX,images.Right001,images.Right002,images.Right003,images.Right004)
+      }else if (peopleY-1 >=0 && e.key === "w" && Array[peopleY-1][peopleX] === "b"){
+        //moveDown to Empty
+        ClearAndDrawInCaseB(context, peopleX, peopleY ,peopleX,peopleY-1,0,-dw/4,
+          peopleY,peopleX,peopleY-1,peopleX,images.Left001,images.Left002,images.Left003,images.Left004)
+      }else if (peopleX+1 < Array[0].length && e.key === "d" && Array[peopleY][peopleX+1] === "e"){
+        //moveRight to End 
+        ClearAndDrawInCaseE(context, peopleX, peopleY ,peopleX+1,peopleY,dw/4, 0, 
+          peopleY,peopleX,peopleY,peopleX+1,images.Right001,images.Right002,images.Right003,images.Right004,
+          canvas.width,canvas.height)
+      }else if (peopleX-1 >= 0 && e.key === "a" && Array[peopleY][peopleX-1] === "e"){
+        //moveLeft to End
+        ClearAndDrawInCaseE(context, peopleX, peopleY ,peopleX-1,peopleY,-dw/4, 0, 
+          peopleY,peopleX,peopleY,peopleX-1,images.Left001,images.Left002,images.Left003,images.Left004,
+          canvas.width,canvas.height)
+      }else if (peopleY+1 < Array.length && e.key === "s" && Array[peopleY+1][peopleX] === "e"){
+        //moveDown to End
+        ClearAndDrawInCaseE(context, peopleX, peopleY ,peopleX,peopleY+1,0,dw/4,
+          peopleY,peopleX,peopleY+1,peopleX,images.Right001,images.Right002,images.Right003,images.Right004,
+          canvas.width,canvas.height)
+      }else if (peopleY-1 >=0 && e.key === "w" && Array[peopleY-1][peopleX] === "e"){
+        //moveDown to End
+        ClearAndDrawInCaseE(context, peopleX, peopleY ,peopleX,peopleY-1,0,-dw/4,
+          peopleY,peopleX,peopleY-1,peopleX,images.Left001,images.Left002,images.Left003,images.Left004,
+          canvas.width,canvas.height)
+      }
+    }
+  }
+
   const StartGame = () => {
     let size = {Easy: 70, Normal: 50, Hard:40}
 
@@ -133,14 +185,16 @@ export default function Maze() {
     
     setTimeout(()=>{
       setStartGameState(true);
+      canvas.focus();
     },500)
   };
 
-
+  
   return (
     <div>
-      <h1> Maze </h1>
-      <p>X:{peopleX} <br/> Y:{peopleY}</p>
+      <h3> Maze </h3>
+      <p>Support mouse click <br/>
+      and Keyboard: W S A D</p>
       <select id="Select">
         <option value="Easy"> Easy </option>
         <option value="Normal"> Normal </option>
@@ -155,7 +209,8 @@ export default function Maze() {
         width="100"
         height="100"
         style={{ border: "2px solid" }}
-        onClick={RunGame}
+        onClick={RunGamebyMouse}
+        onKeyDown={RunGamebyKeyboard}
       ></canvas>
     </div>
   );
