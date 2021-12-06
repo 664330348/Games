@@ -1,48 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectMaze, handleInit, handleMove } from "./MazeSlice";
-import "./images";
-
-import imgPeople_ from "./images/people.jpg";
-import imgEnd_ from "./images/end.png";
-import imgWall_ from "./images/wall.png";
-import win_ from "./images/Win.png";
-import Right001_ from "./images/Right001.png";
-import Right002_ from "./images/Right002.png";
-import Right003_ from "./images/Right003.png";
-import Right004_ from "./images/Right004.png";
-import Left001_ from "./images/Left001.png";
-import Left002_ from "./images/Left002.png";
-import Left003_ from "./images/Left003.png";
-import Left004_ from "./images/Left004.png";
-
-const Right001 = new Image();
-Right001.src = Right001_;
-const Right002 = new Image();
-Right002.src = Right002_;
-const Right003 = new Image();
-Right003.src = Right003_;
-const Right004 = new Image();
-Right004.src = Right004_;
-
-
-const Left001 = new Image();
-Left001.src = Left001_;
-const Left002 = new Image();
-Left002.src = Left002_;
-const Left003 = new Image();
-Left003.src = Left003_;
-const Left004 = new Image();
-Left004.src = Left004_;
-
-const imgPeople = new Image();
-imgPeople.src = imgPeople_;
-const imgEnd = new Image();
-imgEnd.src = imgEnd_;
-const imgWall = new Image();
-imgWall.src = imgWall_;
-const imgWin = new Image();
-imgWin.src = win_;
+import * as images from "./images";
 
 export default function Maze() {
   const dispatch = useDispatch();
@@ -50,7 +9,7 @@ export default function Maze() {
   const [ArrayInit, Array] = useSelector(selectMaze);
   const [peopleX, setPeopleX] = useState(null);
   const [peopleY, setPeopleY] = useState(null);
-  const [dw] = [80];
+  const [dw, setDw] = useState(null);
 
 
   //CaseBlank: move to an empty place  
@@ -67,6 +26,7 @@ export default function Maze() {
       }, 100*i);
     }
    
+    //display X Y location
     setTimeout(() => {
       setStartGameState(true)
       setPeopleX(EndX)
@@ -84,15 +44,15 @@ export default function Maze() {
       setTimeout(() => {
         context.clearRect(X * dw + diffX*i, Y * dw + diffY*i, dw, dw);
         context.drawImage(imgs[i], X * dw + diffX*(i+1), Y * dw + diffY*(i+1), dw, dw);
-        context.drawImage(imgEnd, EndX* dw, EndY* dw, dw, dw);
+        context.drawImage(images.imgEnd, EndX* dw, EndY* dw, dw, dw);
       }, 100*i);
     }
 
     setTimeout(() => {
       context.clearRect(EndX * dw , EndY * dw , dw, dw);
-      context.drawImage(imgEnd, EndX* dw, EndY* dw, dw, dw);
+      context.drawImage(images.imgEnd, EndX* dw, EndY* dw, dw, dw);
       context.drawImage(imgs[3], EndX * dw , EndY * dw, dw, dw);
-      context.drawImage(imgWin,canvasW / 2 - 150,canvasH / 2 - 100,300,200);
+      context.drawImage(images.imgWin,canvasW / 2 - 150,canvasH / 2 - 100,300,200);
     }, 400);
   }
 
@@ -107,67 +67,73 @@ export default function Maze() {
       if (Array[y][x] === "b") {
         if (x - 1 >= 0 ? Array[y][x - 1] === "p" : false) {
           //moveRight
-          ClearAndDrawInCaseB(context, x - 1, y ,x,y,dw/4, 0, y,x - 1,y,x,Right001,Right002,Right003,Right004)
+          ClearAndDrawInCaseB(context, x - 1, y ,x,y,dw/4, 0, y,x - 1,y,x,images.Right001,images.Right002,images.Right003,images.Right004)
         } else if (x + 1 < Array[0].length ? Array[y][x + 1] === "p" : false) {
           //moveLeft
-          ClearAndDrawInCaseB(context, x + 1, y ,x,y, -dw/4, 0, y,x + 1,y,x,Left001,Left002,Left003,Left004)
+          ClearAndDrawInCaseB(context, x + 1, y ,x,y, -dw/4, 0, y,x + 1,y,x,images.Left001,images.Left002,images.Left003,images.Left004)
         } else if (y - 1 >= 0 ? Array[y - 1][x] === "p" : false) {
           //moveDown
-          ClearAndDrawInCaseB(context, x, y-1, x,y, 0,dw/4, y-1,x,y,x,Right001,Right002,Right003,Right004)
+          ClearAndDrawInCaseB(context, x, y-1, x,y, 0,dw/4, y-1,x,y,x,images.Right001,images.Right002,images.Right003,images.Right004)
         } else if (y + 1 < Array.length ? Array[y + 1][x] === "p" : false) {
           //moveUp
-          ClearAndDrawInCaseB(context, x, y+1, x,y, 0,-dw/4, y+1,x,y,x,Left001,Left002,Left003,Left004)
+          ClearAndDrawInCaseB(context, x, y+1, x,y, 0,-dw/4, y+1,x,y,x,images.Left001,images.Left002,images.Left003,images.Left004)
         }
       } else if (Array[y][x] === "e") {
         if (x - 1 >= 0 ? Array[y][x - 1] === "p" : false) {
           ClearAndDrawInCaseE(context, x - 1, y ,x,y,dw/4, 0, y,x - 1,y,x,
-            Right001,Right002,Right003,Right004,canvas.width,canvas.height)
+            images.Right001,images.Right002,images.Right003,images.Right004,canvas.width,canvas.height)
 
         } else if (x + 1 < Array[0].length ? Array[y][x + 1] === "p" : false) {
           ClearAndDrawInCaseE(context, x + 1, y ,x,y, -dw/4, 0, y,x + 1,y,x,
-            Right001,Right002,Right003,Right004,canvas.width,canvas.height)
+            images.Right001,images.Right002,images.Right003,images.Right004,canvas.width,canvas.height)
   
         } else if (y - 1 >= 0 ? Array[y - 1][x] === "p" : false) {
           ClearAndDrawInCaseE(context, x, y-1, x,y, 0,dw/4, y-1,x,y,x,
-            Right001,Right002,Right003,Right004,canvas.width,canvas.height)
+            images.Right001,images.Right002,images.Right003,images.Right004,canvas.width,canvas.height)
 
         } else if (y + 1 < Array.length ? Array[y + 1][x] === "p" : false) {
           ClearAndDrawInCaseE(context, x, y+1, x,y, 0,-dw/4, y+1,x,y,x,
-            Right001,Right002,Right003,Right004,canvas.width,canvas.height)
+            images.Right001,images.Right002,images.Right003,images.Right004,canvas.width,canvas.height)
         }
       }
     }
   };
 
   const StartGame = () => {
+    let size = {Easy: 70, Normal: 50, Hard:40}
+
     let index = Math.floor(Math.random() * 3);
     let myselect = document.getElementById("Select");
     let selectIndex = myselect.selectedIndex;
 
     let difficulty = myselect.options[selectIndex].value;
+    let size_ = size[difficulty]
+    setDw(size_)
     dispatch(handleInit({ difficulty: difficulty, index: index }));
 
     let canvas = document.getElementById("MazeCanvas");
     let context = canvas.getContext("2d");
-    canvas.width = ArrayInit[difficulty][index][0].length * dw;
-    canvas.height = ArrayInit[difficulty][index].length * dw;
+    canvas.width = ArrayInit[difficulty][index][0].length * size_;
+    canvas.height = ArrayInit[difficulty][index].length * size_;
     //context.clearRect(0, 0, canvas.width, canvas.height);
 
     for (let i = 0; i < ArrayInit[difficulty][index].length; i++) {
       for (let j = 0; j < ArrayInit[difficulty][index][0].length; j++) {
         if (ArrayInit[difficulty][index][i][j] === "w") {
-          context.drawImage(imgWall, j * dw, i * dw, dw, dw);
+          context.drawImage(images.imgWall, j * size_, i * size_, size_, size_);
         } else if (ArrayInit[difficulty][index][i][j] === "p") {
           setPeopleX(j);
           setPeopleY(i);
-          context.drawImage(imgPeople, j * dw, i * dw, dw, dw);
+          context.drawImage(images.imgPeople, j * size_, i * size_, size_, size_);
         } else if (ArrayInit[difficulty][index][i][j] === "e") {
-          context.drawImage(imgEnd, j * dw, i * dw, dw, dw);
+          context.drawImage(images.imgEnd, j * size_, i * size_, size_, size_);
         }
       }
     }
-
-    setStartGameState(true);
+    
+    setTimeout(()=>{
+      setStartGameState(true);
+    },500)
   };
 
 

@@ -5,8 +5,9 @@ function Canvas() {
 
     const Clear =()=>{
         let canvas   = document.getElementById("Canvas");
-        canvas.width = canvas.width;
-        canvas.height = canvas.height;
+        let w = canvas.width, h=canvas.height;
+        canvas.width = w;
+        canvas.height = h;
     }
 
     const DrawTriangle =()=>{
