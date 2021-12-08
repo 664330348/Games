@@ -10,8 +10,8 @@
 .PuzzleContent{
     color:#458ffd;
     background-color:#e5edfa;
-    width:600px;
-    height: 330px;
+    width:800px;
+    height: 450px;
 
     display:flex;
     flex-direction:row;

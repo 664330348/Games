@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectPuzzle, handleInit, handleClick } from "./PuzzleSlice";
+import { selectPuzzle, handleInit, handleClick, handleCheckWin} from "./PuzzleSlice";
 import "./Puzzle.css"
 
 let imgGame = new Image();
@@ -11,7 +11,7 @@ export default function Puzzle() {
     const [imageUrl, setimageUrl] = useState(null);
     const [dw, setDw] = useState(null);
     const [click, setClick] = useState(false);
-    const [Imageurl, Array_, History] = useSelector(selectPuzzle);
+    const [Imageurl, Array_, History, WinState] = useSelector(selectPuzzle);
 
     //choose image
     const handleEditImg =(e)=>{
@@ -67,12 +67,18 @@ export default function Puzzle() {
             let col = Math.floor((e.clientX - canvasInfo.left) / dw); //column
             let row = Math.floor((e.clientY - canvasInfo.top) / dw); //row
             
+            //update data
             dispatch(handleClick({row:row, col:col}))
 
             setTimeout(()=>{
+                //impement change
                 document.getElementById("swapImg").click();
+                //update  check win state 
+                dispatch(handleCheckWin());
             },150)
             setTimeout(()=>{
+                //impement check win state
+                document.getElementById("checkWin").click();
                 setClick(true);
             },160)
         }
@@ -111,62 +117,77 @@ export default function Puzzle() {
 
     const Swap=()=>{
         //[{r:clearY, c:clearX}, {r:drawY, c:drawX},{r:imgY, c:imgX}]
-
         if(History.length>0){
             let canvas = document.getElementById("canvasGame");
             let context=canvas.getContext("2d");
             let size = Array_.length;
             let imgW = imgGame.width/size;
             let imgH = imgGame.height/size;
-
-            let Swap_ = History[History.length-1];
             
-            context.clearRect (Swap_[0].c * dw ,Swap_[0].r * dw, dw, dw);
+            context.clearRect (History[0].c * dw ,History[0].r * dw, dw, dw);
             context.drawImage(imgGame, 
-                Swap_[2].c * imgW, Swap_[2].r * imgH, imgW-2, imgH-2,
-                Swap_[1].c*dw+1, Swap_[1].r*dw+1,  dw-2, dw-2);
+                History[2].c * imgW, History[2].r * imgH, imgW-2, imgH-2,
+                History[1].c*dw+1, History[1].r*dw+1,  dw-2, dw-2);
         }
-        
+    }
 
+    const CheckWin=()=>{
+        if (WinState === true){
+            setTimeout(()=>{
+                //console.log(Array_)
+                let canvas = document.getElementById("canvasGame");
+                let context=canvas.getContext("2d");
+                let size = Array_.length;
+                let imgW = imgGame.width/size;
+                let imgH = imgGame.height/size;
+                
+                context.drawImage(imgGame, 
+                    Array_[size-1][size-1].c * imgW, Array_[size-1][size-1].r * imgH, imgW-2, imgH-2,
+                    (size-1)*dw+1, (size-1)*dw+1,  dw-2, dw-2);
+                
+                setClick(false);
+            },10)
+        }
     }
 
     return (
         <div className="Puzzle">
         <h3>Puzzle</h3> 
-        
         <button onClick={DisplayImg} id="displayImg" className="btn btn-outline-primary btn-sm" style={{ display: "none" }}>Test</button>
         <button onClick={Swap} id="swapImg" className="btn btn-outline-primary btn-sm" style={{ display: "none" }}>Swap</button>
+        <button onClick={CheckWin} id="checkWin" className="btn btn-outline-primary btn-sm" style={{ display: "none" }}>Swap</button>
 
         <div className="PuzzleContent">
             <div className="PuzzleLeft">
                 <div className="PuzzleLeftButton">
-                    <select id="Select" className="form-select form-select-sm" 
-                        style={{width:"90px",fontSize:"12px",color:"blue", backgroundColor:"#e5edfa", borderColor:"#458ffd"}}>
+                    <select id="Select" className="form-select form-select-lg" 
+                        style={{width:"120px",color:"blue", backgroundColor:"#e5edfa", borderColor:"#458ffd"}}>
                         <option value="Easy"> Easy </option>
                         <option value="Normal"> Normal </option>
                         <option value="Hard"> Hard </option>
                     </select>
-                    <label htmlFor="inputImg" type="button" className="btn btn-outline-primary btn-sm" >Choose Image</label>
-                    {/* <button onClick={Clear}>Clear</button>
-                    <button onClick={Display}>Display</button> */}
+                    <label htmlFor="inputImg" type="button" className="btn btn-outline-primary btn-lg" >Choose Image</label>
+                   
                     <input type="file" id="inputImg" accept="image/*" onChange={handleEditImg}/> <br/> 
                 </div>
 
                 <div className="PuzzleLeftCanvas">
-                    <canvas id="canvasDisplay" width="180" height="180" style={{ border: "2px solid" }}> A drawing of something </canvas>
+                    <canvas id="canvasDisplay" width="230" height="230" style={{ border: "2px solid" }}> A drawing of something </canvas>
                 </div>
 
                 <div className="PuzzleLeftButton">
-                   <button onClick={StartGame}  className="btn btn-outline-primary btn-sm">Start Game</button>
+                   <button onClick={StartGame}  className="btn btn-outline-primary btn-lg">Start Game</button>
                 </div>
 
             </div>  
             <div className="PuzzleRight">
-                 <canvas id="canvasGame" width="300" height="300" 
+                 <canvas id="canvasGame" width="400" height="400" 
                  style={{ border: "2px solid",}} onClick={RunGamebyMouse}> A drawing of something </canvas>
             </div>
                     
         </div>
+
+        ! The bottom-right corner of the original image is missing
        
         </div>
     );
