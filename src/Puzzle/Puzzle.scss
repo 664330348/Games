@@ -1,58 +1,61 @@
+@mixin box{
+    display: flex;
+    justify-content: space-around;
+    align-items:center;
+}
 
 .Puzzle{
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
-}
-.Puzzle h3{
-    color:#146ef5;
-}
-.PuzzleContent{
-    color:#458ffd;
-    background-color:#e5edfa;
-    width:800px;
-    height: 450px;
 
-    display:flex;
-    flex-direction:row;
+    h3{
+        color:#146ef5;
+    }
 
-    border: 2px solid;
-    border-radius:15px;
-}
+    .PuzzleContent{
+        color:#458ffd;
+        background-color:#e5edfa;
+        width:800px;
+        height: 450px;
+    
+        display:flex;
+        flex-direction:row;
+    
+        border: 2px solid;
+        border-radius:15px;
 
-.PuzzleLeft{
-    flex:4;
+        .PuzzleLeft{
+            flex:4;
+        
+            display:flex;
+            flex-direction:column;
+            border-right: 2px solid;
 
-    display:flex;
-    flex-direction:column;
-    border-right: 2px solid;
-}
-.PuzzleLeft input{
-    display: none;
-}
+            input{
+                display: none;
+            }
 
-.PuzzleLeftButton{
-    flex:1;
+            .PuzzleLeftButton{
+                flex:1;
 
-    display: flex;
-    justify-content: space-around;
-    align-items:center;
-}
-.PuzzleLeftCanvas{
-    flex:3;
-    display: flex;
-    justify-content: space-around;
-    align-items:center;
-}
+                @include box;
+            }
+            .PuzzleLeftCanvas{
+                flex:3;
 
+                @include box;
+            }
+        }
 
+        .PuzzleRight{
+            flex:6;
+        
+            display: flex;
+            justify-content: space-around;
+            align-items:center;
+        }
 
-
-.PuzzleRight{
-    flex:6;
-
-    display: flex;
-    justify-content: space-around;
-    align-items:center;
+    }
 }
