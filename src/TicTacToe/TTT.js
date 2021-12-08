@@ -7,7 +7,7 @@ import {
   handleNewGame,
   checkWin,
 } from "./TTTSlice";
-import "./TTT.css";
+import "./TTT.scss";
 
 export default function TTT() {
   const dispatch = useDispatch();
@@ -31,6 +31,7 @@ export default function TTT() {
   };
   return (
     <div className="TicTacToe">
+    <div className="TicTacToeBox">
       <h1> Tic Tac Toe </h1>
       <p>
         {" "}
@@ -62,20 +63,23 @@ export default function TTT() {
         </div>
       </div>
 
-      <button
-        onClick={() => {
-          dispatch(handleBack());
-        }}
-      >
-        Backtrack
-      </button>
-      <button
-        onClick={() => {
-          dispatch(handleNewGame());
-        }}
-      >
-        newGame
-      </button>
+      <div className="buttonAare">
+        <button className="btn btn-outline-secondary"
+          onClick={() => {
+            dispatch(handleBack());
+          }}
+        >
+          Backtrack
+        </button>
+        <button className="btn btn-outline-secondary"
+          onClick={() => {
+            dispatch(handleNewGame());
+          }}
+        >
+          newGame
+        </button>
+      </div>
+    </div>
     </div>
   );
 }

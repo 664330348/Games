@@ -1,0 +1,56 @@
+.TicTacToe{
+    margin-top: 10vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+
+.TicTacToeBox{
+    width:300px;
+    height:375px;
+    border:2px solid;
+    text-align:center;
+
+    h1{
+        margin:0;
+        font-size:35px;
+        text-align: center;
+        border-bottom: 1px solid;
+    }
+
+    p{
+        margin: 15px 0;
+        font-size: large;
+        text-align: center;
+    }
+}
+
+.board{
+    margin: 20px 52px;
+}
+.board-row:after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.square {
+    background: #fff;
+    border: 1px solid #999;
+    float: left;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 65px;
+    height: 65px;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    width: 65px;
+}
+
+.buttonAare{
+    display: flex;
+    justify-content: space-around;
+}
