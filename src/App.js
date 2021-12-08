@@ -14,7 +14,8 @@ export default function App() {
       >
         <Link to="/TicTacToe">TicTacToe</Link> |{" "}
         <Link to="/Maze">Maze</Link>|{" "}
-        <Link to="/Canvas">Canvas</Link>
+        <Link to="/Canvas">Canvas</Link>|{" "}
+        <Link to="/Puzzle">Puzzle</Link>
       </nav>
       <Outlet />
     </div>

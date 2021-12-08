@@ -109,8 +109,7 @@ export default function Maze() {
     if (StartGameState === true) {
       let canvas = document.getElementById("MazeCanvas");
       let context = canvas.getContext("2d");
-      const canvasInfo = canvas.getBoundingClientRect();
-
+      
       if (peopleX+1 < Array[0].length && e.key === "d" && Array[peopleY][peopleX+1] === "b"){
         //moveRight to Empty
         ClearAndDrawInCaseB(context, peopleX, peopleY ,peopleX+1,peopleY,dw/4, 0, 
@@ -157,7 +156,6 @@ export default function Maze() {
     let index = Math.floor(Math.random() * 3);
     let myselect = document.getElementById("Select");
     let selectIndex = myselect.selectedIndex;
-
     let difficulty = myselect.options[selectIndex].value;
     let size_ = size[difficulty]
     setDw(size_)

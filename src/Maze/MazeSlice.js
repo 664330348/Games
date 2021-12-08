@@ -110,10 +110,6 @@ export const MazeSlice = createSlice({
   },
 });
 
-//export const {handleClick, handleBack, handleNewGame, checkWin} = TTTSlice.actions;
-
-/* export const selectTTT = (state) => {return [state.TicTacToe.history, 
-        state.TicTacToe.step, state.TicTacToe.xIsNext, state.TicTacToe.win]}; */
 
 export const { handleInit, handleMove } = MazeSlice.actions;
 
