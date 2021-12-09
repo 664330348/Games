@@ -192,8 +192,8 @@ export default function Maze() {
   return (
     <div className="Maze">
       <div className="MazeTop">
-        <h3 class="fs-bolder"> Maze </h3>
-        <p class="fw-normal">Support mouse click <br/>
+        <h3 className="fs-bolder"> Maze </h3>
+        <p className="fw-normal">Support mouse click <br/>
         and Keyboard: W S A D</p>
 
         <div>
@@ -204,8 +204,8 @@ export default function Maze() {
           <option value="Hard"> Hard </option>
         </select>
 
-        <button type="button" class="btn btn-outline-dark" 
-         onClick={StartGame}>StartGame</button>
+        <button type="button" className="btn btn-outline-dark" 
+         onClick={StartGame}>Start Game</button>
         </div>
       </div>
 

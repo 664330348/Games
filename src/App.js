@@ -1,21 +1,23 @@
 import React from 'react';
 import { Outlet, Link } from "react-router-dom";
-import './App.css';
+import './App.scss';
 
 export default function App() {
   return (
-    <div>
-      <h1>Game Collection</h1>
-      <nav
+    <div className="App">
+      <h1 className="Title">Game Collection</h1>
+      <nav 
         style={{
+          fontSize:"18px",
           borderBottom: "solid 1px",
-          paddingBottom: "1rem"
+          paddingBottom: "1rem",
         }}
       >
         <Link to="/TicTacToe">TicTacToe</Link> |{" "}
         <Link to="/Maze">Maze</Link>|{" "}
         <Link to="/Canvas">Canvas</Link>|{" "}
-        <Link to="/Puzzle">Puzzle</Link>
+        <Link to="/Puzzle">Puzzle</Link>|{" "}
+        <Link to="/Minesweeper">Minesweeper</Link>
       </nav>
       <Outlet />
     </div>

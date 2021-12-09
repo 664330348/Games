@@ -6,6 +6,7 @@
 .Maze{
     @include flex-column;
     align-items:center;
+    
     .MazeTop{
         margin-top: 25px;
         width: 300px;

@@ -3,6 +3,7 @@ import counterReducer from "../features/counter/counterSlice";
 import TicTacToeReducer from "../TicTacToe/TTTSlice";
 import MazeReducer from "../Maze/MazeSlice";
 import PuzzleReducer from "../Puzzle/PuzzleSlice";
+import MinesweeperReducer from "../Minesweeper/MinesweeperSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     TicTacToe: TicTacToeReducer,
     Maze: MazeReducer,
     Puzzle: PuzzleReducer,
+    Minesweeper: MinesweeperReducer,
   },
 });

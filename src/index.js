@@ -11,6 +11,8 @@ import TTT from "./TicTacToe/TTT";
 import Maze from "./Maze/Maze";
 import Canvas from "./Canvas";
 import Puzzle from "./Puzzle/Puzzle";
+import Minesweeper from "./Minesweeper/Minesweeper";
+
 
 ReactDOM.render(
   <React.StrictMode>
@@ -22,6 +24,7 @@ ReactDOM.render(
             <Route path="/Maze" element={<Maze/>} />
             <Route path="/Canvas" element={<Canvas/>} />
             <Route path="/Puzzle" element={<Puzzle/>} />
+            <Route path="/Minesweeper" element={<Minesweeper/>} />
             {/* The "*" has special meaning here. It will match only when no other routes do. */}
             <Route path="*" element={  
               <main style={{ padding: "1rem" }}>
