@@ -5,12 +5,14 @@
 }
 
 .Puzzle{
+    margin-top: 30px;
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
 
     h3{
+        margin: 15px 0;
         color:#146ef5;
     }
 

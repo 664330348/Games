@@ -186,7 +186,7 @@ export default function Puzzle() {
             </div>
                     
         </div>
-
+        <br/>
         ! The bottom-right corner of the original image is missing
        
         </div>

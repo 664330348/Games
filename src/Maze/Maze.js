@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectMaze, handleInit, handleMove } from "./MazeSlice";
 import * as images from "./images";
+import "./Maze.scss";
 
 export default function Maze() {
   const dispatch = useDispatch();
@@ -189,23 +190,30 @@ export default function Maze() {
 
   
   return (
-    <div>
-      <h3> Maze </h3>
-      <p>Support mouse click <br/>
-      and Keyboard: W S A D</p>
-      <select id="Select">
-        <option value="Easy"> Easy </option>
-        <option value="Normal"> Normal </option>
-        <option value="Hard"> Hard </option>
-      </select>
+    <div className="Maze">
+      <div className="MazeTop">
+        <h3 class="fs-bolder"> Maze </h3>
+        <p class="fw-normal">Support mouse click <br/>
+        and Keyboard: W S A D</p>
 
-      <button onClick={StartGame}>StartGame</button>
-      <br />
+        <div>
+        <select id="Select" className="form-select form-select" 
+          style={{width:"120px",color:"black",  borderColor:"black"}}>
+          <option value="Easy"> Easy </option>
+          <option value="Normal"> Normal </option>
+          <option value="Hard"> Hard </option>
+        </select>
+
+        <button type="button" class="btn btn-outline-dark" 
+         onClick={StartGame}>StartGame</button>
+        </div>
+      </div>
+
       <canvas
         id="MazeCanvas"
         tabIndex="0"
-        width="100"
-        height="100"
+        width="560"
+        height="350"
         style={{ border: "2px solid" }}
         onClick={RunGamebyMouse}
         onKeyDown={RunGamebyKeyboard}
