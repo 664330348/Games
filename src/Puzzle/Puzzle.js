@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectPuzzle, handleInit, handleClick, handleCheckWin} from "./PuzzleSlice";
-import "./puzzle.scss";
+import "./Puzzle.scss";
 
 let imgGame = new Image();
 
