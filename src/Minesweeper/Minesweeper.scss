@@ -9,23 +9,31 @@
     flex-direction:column;
     justify-content:center;
 
-    width: 80%;
-    min-width: 700px;
-    max-width: 1000px;
+    width: 800px;
+    height: 550px;
 
     color:#458ffd;
     border: 2px solid;
     margin-top: 30px;
 
     h3{
+        flex:1;
         border-bottom: 2px solid;
         padding: 8px 0;
     }
-    div{
+    .MinesweeperMiddle{
+        flex:1.5;
         display:flex;
         flex-direction:row;
         justify-content:space-around;
+        align-items: center;
 
-        margin: 10px 0;
+        border-bottom: 2px solid;
+    }
+    .MinesweeperCanvas{
+        flex:10;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }

@@ -13,6 +13,8 @@ import imgblank_ from "./images/blank.png";
 import imgbomb_ from "./images/bomb.png";
 import imgflag_ from "./images/flag.png";
 
+import imgwin_ from "./images/Win.png";
+import imggameover_ from "./images/GameOver.png";
 
 export const img0 = new Image();
 img0.src = img0_;
@@ -41,3 +43,9 @@ export const imgbomb = new Image();
 imgbomb.src = imgbomb_;
 export const imgflag = new Image();
 imgflag.src = imgflag_;
+
+export const imgwin = new Image();
+imgwin.src = imgwin_;
+
+export const imggameover = new Image();
+imggameover.src = imggameover_;

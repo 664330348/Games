@@ -153,9 +153,9 @@ export default function Puzzle() {
     return (
         <div className="Puzzle">
         <h3>Puzzle</h3> 
-        <button onClick={DisplayImg} id="displayImg" className="btn btn-outline-primary btn-sm" style={{ display: "none" }}>Test</button>
+        <button onClick={DisplayImg} id="displayImg" className="btn btn-outline-primary btn-sm" style={{ display: "none" }}>DisplayImg</button>
         <button onClick={Swap} id="swapImg" className="btn btn-outline-primary btn-sm" style={{ display: "none" }}>Swap</button>
-        <button onClick={CheckWin} id="checkWin" className="btn btn-outline-primary btn-sm" style={{ display: "none" }}>Swap</button>
+        <button onClick={CheckWin} id="checkWin" className="btn btn-outline-primary btn-sm" style={{ display: "none" }}>CheckWin</button>
 
         <div className="PuzzleContent">
             <div className="PuzzleLeft">
