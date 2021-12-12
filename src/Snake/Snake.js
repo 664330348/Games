@@ -1,16 +1,20 @@
 import React, {useState} from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectSnake, handleInit, changeDirection, moveToEmptyPlace} from "./SnakeSlice";
+import { selectSnake, handleInit, changeDirection, moveToEmptyPlace, moveToApple} from "./SnakeSlice";
 
 import "./Snake.scss";
 import * as images from "./images";
 
 export default function Snake() {
     const dispatch = useDispatch();
-    const [Array, Snake, difficulty, direction] = useSelector(selectSnake);
+    const [Array, Snake, speed, direction] = useSelector(selectSnake);
+
+    const [GmaeTimeOut, setGameTimeOut] = useState(null);
+    const [points, setPoints] = useState(0);
 
     const dw=35; 
-    const imageMap = [images.imgblue, images.imgblack, images.imgred,]
+    const imageMap = [images.imgblue, images.imgblack, images.imgred, images.imggameover, images.imgwin]
+    //0:empty; 1:snake body; 2:apple; 3:gameover; 4:win
 
     const StartGame =()=>{
         let array = InitialArray();
@@ -19,14 +23,24 @@ export default function Snake() {
         let col = Math.floor(Math.random() * 20);
         array[row][col]=1;
 
-        AddAppleLocation(array);
+        
+        //AddAppleLocation(array);
+        while (true){
+            let row = Math.floor(Math.random() * 10);
+            let col = Math.floor(Math.random() * 20);
+            if(array[row][col]===0){ 
+                array[row][col]=2;
+                break;
+            }
+        }
+
         SetUpDirection(row,col)
 
         let myselect = document.getElementById("Select");
         let selectIndex = myselect.selectedIndex;
-        let difficulty_ = Number(myselect.options[selectIndex].value);
+        let speed_ = Number(myselect.options[selectIndex].value);
         //Initial store data
-        dispatch(handleInit({array:array, snake:[{row:row, col:col}], difficulty:difficulty_}))
+        dispatch(handleInit({array:array, snake:[{row:row, col:col}], speed:speed_}))
         
 
         let canvas = document.getElementById("SnakeGame");
@@ -38,9 +52,15 @@ export default function Snake() {
             }
         }
 
-        setTimeout(()=>{
-            document.getElementById("handleMonve").click();
-        },1000)
+        canvas.focus();
+        setPoints(0);
+
+        if (GmaeTimeOut !== null){
+            clearTimeout(GmaeTimeOut)
+        }
+        setGameTimeOut(setTimeout(()=>{
+            document.getElementById("handleMove").click();
+        },(-200*speed_+1200)))
     }
 
     //initial an array with all 0
@@ -55,27 +75,7 @@ export default function Snake() {
 
         return array;
     }
-    //initial snake location
-    /* const AddStartLocation =(array)=>{
-        let row = Math.floor(Math.random() * 10);
-        let col = Math.floor(Math.random() * 20);
 
-        array[row][col]=1;
-    }  */ 
-    // add a apple location
-    const AddAppleLocation =(array)=>{
-        let stop = false;
-       
-        while (!stop){
-            let row = Math.floor(Math.random() * 10);
-            let col = Math.floor(Math.random() * 20);
-
-            if(array[row][col]===0){
-                array[row][col]=2;
-                stop=true;
-            }
-        }
-    } 
 
     //initial snake moving direction
     const SetUpDirection =(row, col)=>{
@@ -134,22 +134,75 @@ export default function Snake() {
         let context = canvas.getContext("2d");
         
 
+        let GameContinue = true; 
         //case1: hit wall
         if(SnakeHeadNextRow<0 || SnakeHeadNextRow>=Array.length || SnakeHeadNextCol<0 || SnakeHeadNextCol>= Array[0].length){
             console.log("hit wall")
+            context.drawImage(imageMap[3],canvas.width / 2 - 225,canvas.height / 2 - 150,450,300);
+            GameContinue = false;
         }
-        //case1: move to empty place
+        //case2: hit body
+        else if (Array[SnakeHeadNextRow][SnakeHeadNextCol] === 1){
+            console.log("hit body")
+            context.drawImage(imageMap[3],canvas.width / 2 - 225,canvas.height / 2 - 150,450,300);
+            GameContinue = false;
+        }
+        //case3: move to empty place
         else if(Array[SnakeHeadNextRow][SnakeHeadNextCol] === 0){
+            //clear old tail
             context.drawImage(imageMap[0], Snake[Snake.length-1].col* dw+1, Snake[Snake.length-1].row* dw+1, dw-2, dw-2)
+            //draw a new head 
             context.drawImage(imageMap[1], SnakeHeadNextCol* dw+1, SnakeHeadNextRow* dw+1, dw-2, dw-2);
 
             dispatch(moveToEmptyPlace({head:{row:SnakeHeadNextRow, col:SnakeHeadNextCol}}))
         }
+        //case4: eat apple 
+        else if (Array[SnakeHeadNextRow][SnakeHeadNextCol] === 2){
+            //replace apple as the new head 
+            context.drawImage(imageMap[1], SnakeHeadNextCol* dw+1, SnakeHeadNextRow* dw+1, dw-2, dw-2);
 
-        canvas.focus();
-        setTimeout(()=>{
-            document.getElementById("handleMonve").click();
-        },1000)
+            //create an empty collection
+            let array=[];
+            //array=[[row,col][row,col],....]
+            for (let i=0; i<Array.length; i++){
+                for(let j=0; j<Array[0].length; j++){
+                    if(Array[i][j]===0){
+                        let t = [i,j];
+                        array.push(t)
+                    }
+                }
+            }
+            //if this is the last apple, game finishd
+            if (array.length===0){
+                console.log("win")
+                context.drawImage(imageMap[4],canvas.width / 2 - 225,canvas.height / 2 - 150,450,300);
+                GameContinue = false;
+            }
+            //else, keep play
+            else{
+                 let index = Math.floor(Math.random() * array.length);
+                let [appleRow,appleCol] = array[index]
+                context.drawImage(imageMap[2], appleCol* dw+1, appleRow* dw+1, dw-2, dw-2);
+                dispatch(moveToApple({headRow:SnakeHeadNextRow,headCol:SnakeHeadNextCol,appleRow:appleRow, appleCol:appleCol}));
+            }
+           
+            //increase points 
+            let point = points;
+            point += 10;
+            setPoints(point);
+        }
+
+        if (GameContinue === true){
+            setGameTimeOut(setTimeout(()=>{
+                document.getElementById("handleMove").click();
+            },(-200*speed+1200)))
+        }else{
+            clearTimeout(GmaeTimeOut);
+        }
+        // 1 2 3 4 5
+        // 1000 500 300 250 200
+        // 1000 800 600 400 200
+        
     }
 
     const changeSnakeDirection=(e)=>{
@@ -179,16 +232,18 @@ export default function Snake() {
     <div className="SnakePage">
         <div className="Snake">
             <h3>Snake</h3>
-            <button onClick={handleMove} id="handleMonve" style={{ display: "none" }}> handleMonve</button>
+            <button onClick={handleMove} id="handleMove" style={{ display: "none" }}> handleMove</button>
             <div className="SnakeMiddle">
                 <select id="Select" className="form-select form-select-lg" 
                     style={{width:"135px",color:"blue", backgroundColor:"#e5edfa", borderColor:"#458ffd"}}>
-                    <option value={1}> Easy </option>
-                    <option value={2}> Normal </option>
-                    <option value={3}> Hard </option>
+                    <option value={1}> Speed 1 </option>
+                    <option value={2}> Speed 2 </option>
+                    <option value={3}> Speed 3 </option>
+                    <option value={4}> Speed 4 </option>
+                    <option value={5}> Speed 5 </option>
                 </select>
 
-                <p>point</p>
+                <p>point: {points}</p>
 
                 <button  onClick={StartGame} className="btn btn-outline-primary btn-lg">Start Game</button>
             </div>
