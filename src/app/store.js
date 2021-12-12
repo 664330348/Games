@@ -4,6 +4,7 @@ import TicTacToeReducer from "../TicTacToe/TTTSlice";
 import MazeReducer from "../Maze/MazeSlice";
 import PuzzleReducer from "../Puzzle/PuzzleSlice";
 import MinesweeperReducer from "../Minesweeper/MinesweeperSlice";
+import SnakeReducer from "../Snake/SnakeSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     Maze: MazeReducer,
     Puzzle: PuzzleReducer,
     Minesweeper: MinesweeperReducer,
+    Snake: SnakeReducer,
   },
 });

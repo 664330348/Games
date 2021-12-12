@@ -12,7 +12,9 @@ import Maze from "./Maze/Maze";
 import Canvas from "./Canvas";
 import Puzzle from "./Puzzle/Puzzle";
 import Minesweeper from "./Minesweeper/Minesweeper";
+import Snake from "./Snake/Snake";
 
+import Home from "./Home";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,11 +22,13 @@ ReactDOM.render(
       <BrowserRouter>
         <Routes> 
           <Route path="/" element={<App/>} >
+            <Route index element={<Home/>} />
             <Route path="/TicTacToe" element={<TTT/>} />
             <Route path="/Maze" element={<Maze/>} />
             <Route path="/Canvas" element={<Canvas/>} />
             <Route path="/Puzzle" element={<Puzzle/>} />
             <Route path="/Minesweeper" element={<Minesweeper/>} />
+            <Route path="/Snake" element={<Snake/>} />
             {/* The "*" has special meaning here. It will match only when no other routes do. */}
             <Route path="*" element={  
               <main style={{ padding: "1rem" }}>
