@@ -10,11 +10,13 @@ export default function Snake() {
     const [Array, Snake, speed, direction] = useSelector(selectSnake);
 
     const [GmaeTimeOut, setGameTimeOut] = useState(null);
+    const [inGame, setInGame] = useState(false);
     const [points, setPoints] = useState(0);
+    const [tempDirection, setTempDirection] = useState(direction);
 
     const dw=35; 
-    const imageMap = [images.imgblue, images.imgblack, images.imgred, images.imggameover, images.imgwin]
-    //0:empty; 1:snake body; 2:apple; 3:gameover; 4:win
+    const imageMap = [images.imgblue, images.imgblack, images.imgred, images.imggrey, images.imggameover, images.imgwin]
+    //0:empty; 1:snake head; 2:apple; 3:snake body; 4:gameover; 5:win
 
     const StartGame =()=>{
         let array = InitialArray();
@@ -61,6 +63,8 @@ export default function Snake() {
         setGameTimeOut(setTimeout(()=>{
             document.getElementById("handleMove").click();
         },(-200*speed_+1200)))
+
+        setInGame(true);
     }
 
     //initial an array with all 0
@@ -99,8 +103,10 @@ export default function Snake() {
         }
 
         if (left_right - up_down >=0){
+            setTempDirection(direction1);
             dispatch(changeDirection({direction:direction1}))
         }else{
+            setTempDirection(direction2);
             dispatch(changeDirection({direction:direction2}))
         }
     }
@@ -108,22 +114,22 @@ export default function Snake() {
     const handleMove = ()=>{
 
         let SnakeHeadNextRow, SnakeHeadNextCol;
-        if (direction === 0){
+        if (tempDirection === 0){
             console.log("move left")
             SnakeHeadNextRow = Snake[0].row;
             SnakeHeadNextCol = Snake[0].col;
             SnakeHeadNextCol--;
-        }else if (direction === 1){
+        }else if (tempDirection === 1){
             console.log("move up")
             SnakeHeadNextRow = Snake[0].row;
             SnakeHeadNextCol = Snake[0].col;
             SnakeHeadNextRow--;
-        }else if (direction === 2){
+        }else if (tempDirection === 2){
             console.log("move right")
             SnakeHeadNextRow = Snake[0].row;
             SnakeHeadNextCol = Snake[0].col;
             SnakeHeadNextCol++;
-        }else if (direction === 3){
+        }else if (tempDirection === 3){
             console.log("move down")
             SnakeHeadNextRow = Snake[0].row;
             SnakeHeadNextCol = Snake[0].col;
@@ -138,28 +144,38 @@ export default function Snake() {
         //case1: hit wall
         if(SnakeHeadNextRow<0 || SnakeHeadNextRow>=Array.length || SnakeHeadNextCol<0 || SnakeHeadNextCol>= Array[0].length){
             console.log("hit wall")
-            context.drawImage(imageMap[3],canvas.width / 2 - 225,canvas.height / 2 - 150,450,300);
+            context.drawImage(imageMap[4],canvas.width / 2 - 225,canvas.height / 2 - 150,450,300);
             GameContinue = false;
+            setInGame(false);
         }
-        //case2: hit body
-        else if (Array[SnakeHeadNextRow][SnakeHeadNextCol] === 1){
-            console.log("hit body")
-            context.drawImage(imageMap[3],canvas.width / 2 - 225,canvas.height / 2 - 150,450,300);
-            GameContinue = false;
-        }
-        //case3: move to empty place
-        else if(Array[SnakeHeadNextRow][SnakeHeadNextCol] === 0){
+        //case2: move to empty place or next head point to the old tail 
+        else if(Array[SnakeHeadNextRow][SnakeHeadNextCol] === 0 || 
+            (SnakeHeadNextRow===Snake[Snake.length-1].row &&  SnakeHeadNextCol===Snake[Snake.length-1].col)){
             //clear old tail
             context.drawImage(imageMap[0], Snake[Snake.length-1].col* dw+1, Snake[Snake.length-1].row* dw+1, dw-2, dw-2)
+            //replace old head as body 
+            if(Snake.length>1){
+                context.drawImage(imageMap[3], Snake[0].col* dw+1, Snake[0].row* dw+1, dw-2, dw-2);
+            }
             //draw a new head 
             context.drawImage(imageMap[1], SnakeHeadNextCol* dw+1, SnakeHeadNextRow* dw+1, dw-2, dw-2);
 
             dispatch(moveToEmptyPlace({head:{row:SnakeHeadNextRow, col:SnakeHeadNextCol}}))
+            dispatch(changeDirection({direction:tempDirection}));
+        }
+        //case3: hit body
+        else if (Array[SnakeHeadNextRow][SnakeHeadNextCol] === 3){
+            console.log("hit body")
+            context.drawImage(imageMap[4],canvas.width / 2 - 225,canvas.height / 2 - 150,450,300);
+            GameContinue = false;
+            setInGame(false);
         }
         //case4: eat apple 
         else if (Array[SnakeHeadNextRow][SnakeHeadNextCol] === 2){
             //replace apple as the new head 
             context.drawImage(imageMap[1], SnakeHeadNextCol* dw+1, SnakeHeadNextRow* dw+1, dw-2, dw-2);
+            //replace old head as body 
+            context.drawImage(imageMap[3], Snake[0].col* dw+1, Snake[0].row* dw+1, dw-2, dw-2);
 
             //create an empty collection
             let array=[];
@@ -175,8 +191,9 @@ export default function Snake() {
             //if this is the last apple, game finishd
             if (array.length===0){
                 console.log("win")
-                context.drawImage(imageMap[4],canvas.width / 2 - 225,canvas.height / 2 - 150,450,300);
+                context.drawImage(imageMap[5],canvas.width / 2 - 225,canvas.height / 2 - 150,450,300);
                 GameContinue = false;
+                setInGame(false);
             }
             //else, keep play
             else{
@@ -193,6 +210,7 @@ export default function Snake() {
         }
 
         if (GameContinue === true){
+            dispatch(changeDirection({direction:tempDirection}));
             setGameTimeOut(setTimeout(()=>{
                 document.getElementById("handleMove").click();
             },(-200*speed+1200)))
@@ -206,25 +224,28 @@ export default function Snake() {
     }
 
     const changeSnakeDirection=(e)=>{
-    // 0=left, 1=up, 2=right, 3=down
-        let direction_ = direction;
-        //turn left
-        if (e.key === "a"){
-            if (direction_-1 <0){
-                direction_ = 3
-            }else{
-                direction_--;
+        if(inGame){
+            // 0=left, 1=up, 2=right, 3=down
+            let direction_ = direction;
+            //turn left
+            if (e.key === "a"){
+                if (direction_-1 <0){
+                    direction_ = 3
+                }else{
+                    direction_--;
+                }
+                //dispatch(changeDirection({direction:direction_}));
             }
-            dispatch(changeDirection({direction:direction_}));
-        }
-        //turn right
-        else if (e.key === "d"){
-            if (direction_+1 >3){
-                direction_ = 0
-            }else{
-                direction_++;
+            //turn right
+            else if (e.key === "d"){
+                if (direction_+1 >3){
+                    direction_ = 0
+                }else{
+                    direction_++;
+                }
+                //dispatch(changeDirection({direction:direction_}));
             }
-            dispatch(changeDirection({direction:direction_}));
+            setTempDirection(direction_);
         }
     }
     
