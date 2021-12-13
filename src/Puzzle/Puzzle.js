@@ -187,7 +187,7 @@ export default function Puzzle() {
                     
         </div>
         <br/>
-        ! The bottom-right corner of the original image is missing
+        ! The bottom-right corner of the original image is hidden. it will show up if the puzzle is completed.
        
         </div>
     );
