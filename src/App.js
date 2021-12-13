@@ -13,10 +13,11 @@ export default function App() {
           paddingBottom: "1rem",
         }}
       >
+        <Link to="/">Home</Link> |{" "}
         <Link to="/TicTacToe">TicTacToe</Link> |{" "}
         <Link to="/Maze">Maze</Link>|{" "}
         <Link to="/Canvas">Canvas</Link>|{" "}
-        <Link to="/Puzzle">Puzzle</Link>|{" "}
+        <Link to="/HuarongRoad">Huarong Road</Link>|{" "}
         <Link to="/Minesweeper">Minesweeper</Link>|{" "}
         <Link to="/Snake">Snake</Link>
       </nav>

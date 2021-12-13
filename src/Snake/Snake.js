@@ -212,7 +212,11 @@ export default function Snake() {
         if (GameContinue === true){
             dispatch(changeDirection({direction:tempDirection}));
             setGameTimeOut(setTimeout(()=>{
-                document.getElementById("handleMove").click();
+                try{
+                    document.getElementById("handleMove").click();
+                }catch(error){
+                    console.log(error.message);
+                }
             },(-200*speed+1200)))
         }else{
             clearTimeout(GmaeTimeOut);
@@ -228,7 +232,7 @@ export default function Snake() {
             // 0=left, 1=up, 2=right, 3=down
             let direction_ = direction;
             //turn left
-            if (e.key === "a"){
+            if (e.key === "a" || e.key === "A"){
                 if (direction_-1 <0){
                     direction_ = 3
                 }else{
@@ -237,7 +241,7 @@ export default function Snake() {
                 //dispatch(changeDirection({direction:direction_}));
             }
             //turn right
-            else if (e.key === "d"){
+            else if (e.key === "d" || e.key === "D"){
                 if (direction_+1 >3){
                     direction_ = 0
                 }else{
@@ -277,6 +281,9 @@ export default function Snake() {
                  onKeyDown={changeSnakeDirection}> A drawing of something </canvas>
             </div>
         </div>
-        </div>
+        <p>
+        Instructions: only accept keyboard 'A' (turn left) and 'D' (turn right);
+        </p>
+    </div>
   );
 }

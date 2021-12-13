@@ -111,38 +111,38 @@ export default function Maze() {
       let canvas = document.getElementById("MazeCanvas");
       let context = canvas.getContext("2d");
       
-      if (peopleX+1 < Array[0].length && e.key === "d" && Array[peopleY][peopleX+1] === "b"){
+      if (peopleX+1 < Array[0].length && (e.key === "d" || e.key === "D") && Array[peopleY][peopleX+1] === "b"){
         //moveRight to Empty
         ClearAndDrawInCaseB(context, peopleX, peopleY ,peopleX+1,peopleY,dw/4, 0, 
           peopleY,peopleX,peopleY,peopleX+1,images.Right001,images.Right002,images.Right003,images.Right004)
-      }else if (peopleX-1 >= 0 && e.key === "a" && Array[peopleY][peopleX-1] === "b"){
+      }else if (peopleX-1 >= 0 && (e.key === "a" || e.key === "A") && Array[peopleY][peopleX-1] === "b"){
         //moveLeft to Empty
         ClearAndDrawInCaseB(context, peopleX, peopleY ,peopleX-1,peopleY,-dw/4, 0, 
           peopleY,peopleX,peopleY,peopleX-1,images.Left001,images.Left002,images.Left003,images.Left004)
-      }else if (peopleY+1 < Array.length && e.key === "s" && Array[peopleY+1][peopleX] === "b"){
+      }else if (peopleY+1 < Array.length && (e.key === "s" || e.key === "S") && Array[peopleY+1][peopleX] === "b"){
         //moveDown to Empty
         ClearAndDrawInCaseB(context, peopleX, peopleY ,peopleX,peopleY+1,0,dw/4,
           peopleY,peopleX,peopleY+1,peopleX,images.Right001,images.Right002,images.Right003,images.Right004)
-      }else if (peopleY-1 >=0 && e.key === "w" && Array[peopleY-1][peopleX] === "b"){
+      }else if (peopleY-1 >=0 && (e.key === "w" || e.key === "W") && Array[peopleY-1][peopleX] === "b"){
         //moveDown to Empty
         ClearAndDrawInCaseB(context, peopleX, peopleY ,peopleX,peopleY-1,0,-dw/4,
           peopleY,peopleX,peopleY-1,peopleX,images.Left001,images.Left002,images.Left003,images.Left004)
-      }else if (peopleX+1 < Array[0].length && e.key === "d" && Array[peopleY][peopleX+1] === "e"){
+      }else if (peopleX+1 < Array[0].length && (e.key === "d" || e.key === "D") && Array[peopleY][peopleX+1] === "e"){
         //moveRight to End 
         ClearAndDrawInCaseE(context, peopleX, peopleY ,peopleX+1,peopleY,dw/4, 0, 
           peopleY,peopleX,peopleY,peopleX+1,images.Right001,images.Right002,images.Right003,images.Right004,
           canvas.width,canvas.height)
-      }else if (peopleX-1 >= 0 && e.key === "a" && Array[peopleY][peopleX-1] === "e"){
+      }else if (peopleX-1 >= 0 && (e.key === "a" || e.key === "A") && Array[peopleY][peopleX-1] === "e"){
         //moveLeft to End
         ClearAndDrawInCaseE(context, peopleX, peopleY ,peopleX-1,peopleY,-dw/4, 0, 
           peopleY,peopleX,peopleY,peopleX-1,images.Left001,images.Left002,images.Left003,images.Left004,
           canvas.width,canvas.height)
-      }else if (peopleY+1 < Array.length && e.key === "s" && Array[peopleY+1][peopleX] === "e"){
+      }else if (peopleY+1 < Array.length && (e.key === "s" || e.key === "S") && Array[peopleY+1][peopleX] === "e"){
         //moveDown to End
         ClearAndDrawInCaseE(context, peopleX, peopleY ,peopleX,peopleY+1,0,dw/4,
           peopleY,peopleX,peopleY+1,peopleX,images.Right001,images.Right002,images.Right003,images.Right004,
           canvas.width,canvas.height)
-      }else if (peopleY-1 >=0 && e.key === "w" && Array[peopleY-1][peopleX] === "e"){
+      }else if (peopleY-1 >=0 && (e.key === "w" || e.key === "W") && Array[peopleY-1][peopleX] === "e"){
         //moveDown to End
         ClearAndDrawInCaseE(context, peopleX, peopleY ,peopleX,peopleY-1,0,-dw/4,
           peopleY,peopleX,peopleY-1,peopleX,images.Left001,images.Left002,images.Left003,images.Left004,
