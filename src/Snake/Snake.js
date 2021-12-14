@@ -62,7 +62,7 @@ export default function Snake() {
         }
         setGameTimeOut(setTimeout(()=>{
             document.getElementById("handleMove").click();
-        },(-200*speed_+1200)))
+        },(-225*speed+1225)))
 
         setInGame(true);
     }
@@ -217,13 +217,14 @@ export default function Snake() {
                 }catch(error){
                     console.log(error.message);
                 }
-            },(-200*speed+1200)))
+            },(-225*speed+1225)))
         }else{
             clearTimeout(GmaeTimeOut);
         }
         // 1 2 3 4 5
         // 1000 500 300 250 200
         // 1000 800 600 400 200
+        // 1000 775 550 325 100
         
     }
 
