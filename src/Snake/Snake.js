@@ -9,7 +9,7 @@ export default function Snake() {
     const dispatch = useDispatch();
     const [Array, Snake, speed, direction] = useSelector(selectSnake);
 
-    const [GmaeTimeOut, setGameTimeOut] = useState(null);
+    const [GameTimeOut, setGameTimeOut] = useState(null);
     const [inGame, setInGame] = useState(false);
     const [points, setPoints] = useState(0);
     const [tempDirection, setTempDirection] = useState(direction);
@@ -40,7 +40,8 @@ export default function Snake() {
 
         let myselect = document.getElementById("Select");
         let selectIndex = myselect.selectedIndex;
-        let speed_ = Number(myselect.options[selectIndex].value);
+        let speedobject = {1:1000, 2:700, 3:400, 4:200, 5:100};
+        let speed_ = speedobject[Number(myselect.options[selectIndex].value)];
         //Initial store data
         dispatch(handleInit({array:array, snake:[{row:row, col:col}], speed:speed_}))
         
@@ -57,12 +58,12 @@ export default function Snake() {
         canvas.focus();
         setPoints(0);
 
-        if (GmaeTimeOut !== null){
-            clearTimeout(GmaeTimeOut)
+        if (GameTimeOut !== null){
+            clearTimeout(GameTimeOut)
         }
         setGameTimeOut(setTimeout(()=>{
             document.getElementById("handleMove").click();
-        },(-225*speed+1225)))
+        },(speed_)))
 
         setInGame(true);
     }
@@ -217,14 +218,12 @@ export default function Snake() {
                 }catch(error){
                     console.log(error.message);
                 }
-            },(-225*speed+1225)))
+            },(speed)))
         }else{
-            clearTimeout(GmaeTimeOut);
+            clearTimeout(GameTimeOut);
         }
         // 1 2 3 4 5
-        // 1000 500 300 250 200
-        // 1000 800 600 400 200
-        // 1000 775 550 325 100
+        // 1000 700 400 200 100
         
     }
 

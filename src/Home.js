@@ -1,7 +1,7 @@
 import React from 'react';
-import {Link } from "react-router-dom";
 import * as images from "./images/images";
 import "./Home.scss";
+import { useNavigate } from "react-router-dom";
 
 const Collection = [
     {id:0, Title:"TicTacToe",Content:"Two players who take turns marking the spaces in a 3x3 grid with X or O.",link:"/TicTacToe"},
@@ -15,16 +15,19 @@ const Collection = [
 
 export default function Home (){
     const imagesMap =[images.imgTicTacToe, images.imgMaze, images.imgPuzzle, images.imgMinesweeper, images.imgSnake]
-    
+    const navigate = useNavigate();
+
+    const jump =(path)=>{
+        navigate(path);
+    }
+
     const Display = Collection.map(each =>(
-        <div className="card" key={each.id} style={{width: "18rem", minWidth:"300px",marginTop:"25px"}}>
+        <div className="card" key={each.id} onClick={()=>{jump(each.link)}}
+            style={{width: "18rem", minWidth:"300px",margin:"20px 0px",cursor:"pointer" }}>
             <img src={imagesMap[each.id]} className="card-img-top" alt="..." style={{width: "300",height:"300px"}}/>
             <div className="card-body">
                 <h5 className="card-title">{each.Title}</h5>
                 <p className="card-text" style={{width:"250px"}}>{each.Content}</p>
-            </div>
-            <div className="card-body">
-                <Link className="card-link" to={each.link} style={{fontSize:"18px"}}>{each.Title}</Link>
             </div>
         </div>
     ))
